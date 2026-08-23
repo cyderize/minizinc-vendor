@@ -292,6 +292,10 @@ def main() -> int:
     elif args.cmd == "versions":
         for name in m["deps"]:
             print(f"{name} {dep_version_label(resolve_dep(m, name))}")
+        # Not a dep, but a downstream pin all the same: libminizinc must link the
+        # wasm archives with the emscripten that built them. Reported here so the
+        # existing reconcile/bump path keeps it in sync.
+        print(f"emsdk {m['platforms']['wasm']['container'].rsplit(':', 1)[-1]}")
     elif args.cmd == "platforms":
         print("\n".join(m["platforms"].keys()))
     elif args.cmd == "lock":

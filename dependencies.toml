@@ -99,8 +99,11 @@ mznarch   = "win64"
 triple    = "aarch64-windows"
 
 [platforms.wasm]
+# Doubles as the toolchain pin: `manifest.py versions` reports the tag as `emsdk`,
+# so libminizinc links these archives with the emscripten that built them. A bump
+# rebuilds every wasm asset (changed_deps() bails out on a platform edit).
 runner    = "ubuntu-24.04"
-container = "emscripten/emsdk:3.1.64"
+container = "emscripten/emsdk:6.0.8"
 mznarch   = "wasm"
 triple    = "wasm32-emscripten"
 
