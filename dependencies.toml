@@ -209,10 +209,8 @@ gist         = true             # → gecode.sh 1
 source_of    = "gecode"         # shares gecode's commit; never pinned independently
 uses         = ["qt"]           # Qt: aqtinstall (linux container) / install-qt-action (osx, win64*)
 artifact_dir = "gecode_gist"
-# NOT linux-arm64 / musl / wasm: no Qt 6 Linux ARM64 build, Gist needs a GUI which
-# musl/wasm don't have. win64-arm: unverified, first attempt -- Qt does publish an
-# official ARM64 Windows desktop build (install-qt-action host: windows_arm64).
-platforms    = ["linux", "osx", "osx-intel", "win64", "win64-arm"]
+# NOT musl / wasm: Gist needs a GUI which those platforms do not have.
+platforms    = ["linux", "linux-arm64", "osx", "osx-intel", "win64", "win64-arm"]
 
 [deps.gecode_gist.env.win64-arm]
 # Same as gecode's win64-arm block: the core sources this recipe also compiles

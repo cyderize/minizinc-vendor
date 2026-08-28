@@ -41,10 +41,12 @@ dnf -y install libxcb-devel libxkbcommon-devel mesa-libGL-devel fontconfig-devel
 # The system python3 (AlmaLinux 8 => 3.6) is too old for aqtinstall; use a bundled manylinux python.
 PY=$(ls -d /opt/python/cp311-cp311/bin/python /opt/python/cp312-cp312/bin/python 2>/dev/null | head -1)
 "$PY" -m pip install --quiet aqtinstall
-# Qt renamed the Linux desktop arch (6.5 = gcc_64, 6.9+ = linux_gcc_64), so resolve it
-# instead of hardcoding, and take the install dir aqt actually created.
-QT_ARCH=$("$PY" -m aqt list-qt linux desktop --arch {ver} | tr ' ' '\\n' | grep -E '^(linux_)?gcc_64$' | head -1)
-"$PY" -m aqt install-qt linux desktop {ver} "$QT_ARCH" --outputdir /opt/qt
+# Qt has distinct repository hosts for x86_64 and ARM64 Linux. The x86_64 kit
+# was renamed from gcc_64 to linux_gcc_64; resolve that name, while ARM64 uses
+# linux_gcc_arm64. Take the install dir aqt actually created.
+QT_ARCH=$("$PY" -m aqt list-qt {host} desktop --arch {ver} | tr ' ' '\\n' | grep -E '{arch_pattern}' | head -1)
+test -n "$QT_ARCH"
+"$PY" -m aqt install-qt {host} desktop {ver} "$QT_ARCH" --outputdir /opt/qt
 QT_DIR=$(ls -d /opt/qt/{ver}/*/ | head -1)
 QT_DIR=${{QT_DIR%/}}
 export PATH="$QT_DIR/bin:$PATH"
@@ -102,7 +104,14 @@ def cell_setup(m: dict, platform: str, qt_in_container: bool) -> str:
     setup = m["platforms"][platform].get("setup", "")
     if qt_in_container:
         ver = m["toolchain"]["qt"]["version"]
-        setup = (setup + "\n" if setup else "") + QT_CONTAINER_SETUP.format(ver=ver)
+        qt_host, qt_arch_pattern = (
+            ("linux_arm64", "^linux_gcc_arm64$")
+            if platform == "linux-arm64"
+            else ("linux", "^(linux_)?gcc_64$")
+        )
+        setup = (setup + "\n" if setup else "") + QT_CONTAINER_SETUP.format(
+            ver=ver, host=qt_host, arch_pattern=qt_arch_pattern
+        )
     return setup
 
 
