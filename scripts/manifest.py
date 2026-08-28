@@ -35,7 +35,7 @@ MANIFEST = os.path.join(HERE, "dependencies.toml")
 ASSET_EXT = "tar.gz"
 
 # Install Qt inside a (manylinux) container via aqtinstall for the gist build.
-# manylinux_2_28 is glibc 2.28, which the official Qt 6 Linux binaries require.
+# manylinux_2_34 glibc 2.34, which the official Qt 6 Linux binaries require.
 QT_CONTAINER_SETUP = """\
 dnf -y install libxcb-devel libxkbcommon-devel mesa-libGL-devel fontconfig-devel freetype-devel libX11-devel 2>/dev/null || true
 # The system python3 (AlmaLinux 8 => 3.6) is too old for aqtinstall; use a bundled manylinux python.

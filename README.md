@@ -45,7 +45,7 @@ dependency versions and download the asset for their own triple.
 - **`scripts/update_check.py`** — resolves the newest upstream version of each
   tracked pin, and rewrites one pin in place.
 
-Base images are stock public ones — `manylinux_2_28` (glibc 2.28 floor) for
+Base images are stock public ones — `manylinux_2_34` (glibc 2.34 floor) for
 glibc-linux, `alpine` for musl, `emscripten/emsdk` for wasm — with build deps
 installed at job time via the platform's `setup`, so there is no bespoke build
 image to maintain. Qt for `gecode_gist` is fetched on demand: `aqtinstall`
