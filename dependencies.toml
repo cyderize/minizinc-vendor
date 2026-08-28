@@ -230,11 +230,11 @@ track        = { kind = "git-tags", repo = "https://github.com/Chuffed/chuffed",
 # the binaries are not carried in git. slproweb keeps only the newest patch per
 # branch, so this version has to be bumped when it 404s.
 recipe       = "recipes/openssl.sh"
-version      = "3.5.7"
+version      = "3.5.8"
 artifact_dir = "openssl"
 platforms    = ["win64", "win64-arm"]
 track        = { kind = "manual" }
 [deps.openssl.env.win64]
-OPENSSL_EXE  = "Win64OpenSSL_Light-3_5_7.exe"
+OPENSSL_EXE  = "Win64OpenSSL_Light-3_5_8.exe"
 [deps.openssl.env.win64-arm]
-OPENSSL_EXE  = "Win64ARMOpenSSL_Light-3_5_7.exe"
+OPENSSL_EXE  = "Win64ARMOpenSSL_Light-3_5_8.exe"
